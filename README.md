@@ -10,7 +10,7 @@ Inside the `main.py` script, init an instance of `_grammar`, passing these param
 - `non_ters`: set of non-terminal symbols.
 - `ters`: set of terminal symbols.
 - `prods`: set of grammar's productions.
-- Use the constant variable `_grammar.EPSILON`, `_grammar.ENDMARK` for $\epsilon$ and $\$$, respectively.
+- Use the constant variable `_grammar.EPSILON`, `_grammar.ENDMARK` for $\epsilon$ and $ \$ $, respectively.
 
 Here is an example:
 

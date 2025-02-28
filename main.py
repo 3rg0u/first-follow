@@ -3,6 +3,7 @@ from pprint import pprint
 
 
 def main():
+    starts = "S"
     non_ters = ("S", "A", "B", "C", "D")
     ters = ("a", "b", "c", "d", "u")
 
@@ -16,7 +17,7 @@ def main():
         "D": {"Dd", _grammar.EPSILON},
     }
 
-    g = _grammar(starts=("S"), non_ters=non_ters, ters=ters, prods=prods)
+    g = _grammar(starts=starts, non_ters=non_ters, ters=ters, prods=prods)
     print("First set:")
     pprint(g.first)
     print("\n\n\n")

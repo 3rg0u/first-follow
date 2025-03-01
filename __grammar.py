@@ -56,7 +56,7 @@ class _grammar:
             _idx = 0
             _state = [
                 len(self.first[n_ter]) for n_ter in self.prods.keys()
-            ]  # track num-of-elms of first(X)
+            ]  # track state of all First(X)
             # check each non-ter X & its corresponding prods
             for n_ter, prds in self.prods.items():
                 # discard all EPSILON prods
@@ -79,7 +79,7 @@ class _grammar:
                 # update modifications
                 _state[_idx] = len(self.first[n_ter]) != _state[_idx]
                 _idx += 1
-            _changed = True in _state  # True if _state has been changed
+            _changed = True in _state  # True if _state was changed
 
     def __follow(self):
         """
@@ -100,9 +100,9 @@ class _grammar:
                 # => first(β) cannot include EPSILON
                 # => follow(B) = follow(B) ∪ first(β)
                 if rhs[-1] in self.ters:
-                    for i, symbol in enumerate(rhs):
-                        if symbol in self.non_ters:
-                            self.follow[symbol] |= self.__inter_first(rhs[i + 1 :])
+                    for i, sym in enumerate(rhs):
+                        if sym in self.non_ters:
+                            self.follow[sym] |= self.__inter_first(rhs[i + 1 :])
                 else:
                     # case: X -> αB
                     # follow(B) = follow(B) ∪ follow(X)
@@ -110,21 +110,21 @@ class _grammar:
 
                     # the rest, which is follow(α), similar as above
                     _rest = rhs[:-1]
-                    for i, symbol in enumerate(_rest):
-                        if symbol in self.non_ters:
+                    for i, sym in enumerate(_rest):
+                        if sym in self.non_ters:
                             _tmp = self.__inter_first(_rest[i + 1 :])
                             if _grammar.EPSILON in _tmp:
-                                self.follow[symbol] |= self.follow[n_ter]
+                                self.follow[sym] |= self.follow[n_ter]
                                 continue
-                            self.follow[symbol] |= _tmp
+                            self.follow[sym] |= _tmp
 
     def __inter_first(self, sent):
         first = set()
-        _eps_cnt = len(sent)
-        for symbol in sent:
-            first |= self.first[symbol] - {_grammar.EPSILON}
-            if _grammar.EPSILON not in self.first[symbol]:
+        _eps = len(sent)
+        for sym in sent:
+            first |= self.first[sym] - {_grammar.EPSILON}
+            if _grammar.EPSILON not in self.first[sym]:
                 break
-            _eps_cnt -= 1
-        first |= {_grammar.EPSILON} if _eps_cnt == 0 else set()
+            _eps -= 1
+        first |= {_grammar.EPSILON} if _eps == 0 else set()
         return first

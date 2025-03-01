@@ -20,7 +20,7 @@ non_ters = ('S', 'A', 'B', 'C')
 ters = ('a', 'b', 'c', 'd', 'e')
 prods = {
     'S': {'ABC'}, # S -> ABC
-    'A': {'BC', 'Cd'} # A -> BC | Cd
+    'A': {'BC', 'Cd'}, # A -> BC | Cd
     'B': {'CC', _grammar.EPSILON}, # B -> CC | epsilon
     'C': {'d', 'e'} # C -> d | e
 }

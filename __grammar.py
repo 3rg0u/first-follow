@@ -51,28 +51,35 @@ class _grammar:
             )
 
         # case: X -> Y1Y2Y3...Yn
-        _is_changed = True  # compute til there's no change in all first-set
-        while _is_changed:
-            _is_changed = False
+        _changed = True  # compute til there's no change in all first-set
+        while _changed:
+            _idx = 0
+            _state = [
+                len(self.first[n_ter]) for n_ter in self.prods.keys()
+            ]  # track num-of-elms of first(X)
             # check each non-ter X & its corresponding prods
             for n_ter, prds in self.prods.items():
-                _len_state = len(self.first[n_ter])  # track num-of-elms of first(X)
-                # remove EPSILON if it's a production
+                # discard all EPSILON prods
                 prds.discard(_grammar.EPSILON)
                 # check each prod X -> YZW...
                 for rhs in prds:
-                    _eps_cnt = len(rhs)  # track EPSILON-appearances
+                    _eps = len(rhs)  # tracking EPSILON-appearances
                     for symbol in rhs:
                         # First(X) = First(X) ∪ {First(Y) - {EPSILON}}
                         self.first[n_ter] |= self.first[symbol] - {_grammar.EPSILON}
+
+                        # if EPSILON not in first(Y), end
                         if _grammar.EPSILON not in self.first[symbol]:
                             break
-                        _eps_cnt -= 1
-                        # X ->* EPSILON, add EPSILON to First(X)
-                    self.first[n_ter] |= {_grammar.EPSILON} if _eps_cnt == 0 else set()
-                _is_changed = _len_state != len(
-                    self.first[n_ter]
-                )  # whether First(X) is modified
+                        else:
+                            _eps -= 1
+                    self.first[n_ter] |= (
+                        {_grammar.EPSILON} if _eps == 0 else set()
+                    )  # _eps = 0 => EPSILON-able
+                # update modifications
+                _state[_idx] = len(self.first[n_ter]) != _state[_idx]
+                _idx += 1
+            _changed = True in _state  # True if _state has been changed
 
     def __follow(self):
         """

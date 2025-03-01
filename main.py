@@ -3,14 +3,28 @@ from pprint import pprint
 
 
 def main():
+    # starts = "S"
+    # non_ters = ("S", "A", "B", "C", "D")
+    # ters = ("b", "c", "d")
+
+    # prods = {
+    #     "S": {"Ac", "BBc"},
+    #     "B": {"dBb", "dDb", _grammar.EPSILON},
+    #     "A": {"BC"},
+    #     "C": {"b", "bCd"},
+    #     "D": {"bd", "bDd"},
+    # }
+
+    # starts = "S"
+    # non_ters = ("S", "A")
+    # ters = ("a", "b")
+    # prods = {"S": {"AS", "b"}, "A": {"SA", "a"}}
+
     starts = "S"
     non_ters = ("S", "A", "B", "C", "D")
     ters = ("a", "b", "c", "d", "u")
-
     prods = {
-        "S": {
-            "ABCd",
-        },
+        "S": {"ABCd"},
         "A": {"CDu", _grammar.EPSILON},
         "B": {"bd", "cDd", _grammar.EPSILON},
         "C": {"aA", _grammar.EPSILON},

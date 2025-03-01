@@ -109,10 +109,10 @@ class _grammar:
                     self.follow[rhs[-1]] |= self.follow[n_ter]
 
                     # the rest, which is follow(α), similar as above
-                    _rest = rhs[:-1]
-                    for i, sym in enumerate(_rest):
+                    # _rest = rhs[:-1]
+                    for i, sym in enumerate(rhs):
                         if sym in self.non_ters:
-                            _tmp = self.__inter_first(_rest[i + 1 :])
+                            _tmp = self.__inter_first(rhs[i + 1 :])
                             if _grammar.EPSILON in _tmp:
                                 self.follow[sym] |= self.follow[n_ter]
                                 continue
